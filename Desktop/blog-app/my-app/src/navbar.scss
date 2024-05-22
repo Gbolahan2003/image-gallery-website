@@ -1,0 +1,64 @@
+header{
+    display: flex;
+  
+    padding: 0rem 3rem;
+    gap: 20rem;
+    background: #FFF;
+box-shadow: 3px 0px 20px 0px rgba(0, 0, 0, 0.1);
+.blog-logo{
+    display: flex;
+    align-items: center;
+    p{
+        color: #213F7D;
+        strong{
+            font-family: 'Roboto' sans-serif;
+            font-size: 4rem;
+        }
+        font-size: 1.3rem;
+        font-weight: 500;
+    }
+}
+.input-box{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    input{
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
+border: 1px solid #213F7D;
+opacity: 0.2;
+background: #FFF;
+height: 2.5rem;
+padding: 0.15rem 1rem;
+width: 20rem;
+font-size: 1.3rem;
+    }
+    .svg-con{
+        background-color: rgba(57, 205, 204, 1);
+        padding: 0.8rem 1rem;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+}
+.admin-pic{
+    margin-left: 5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+.pic{
+    font-size: 5rem;
+    font-weight: 400;
+    color: rgba(57, 205, 204, 1);
+}
+.admin-text{
+    color: #213F7D;
+font-family: Work Sans;
+font-size: 1.4rem;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+}
+}
+}
