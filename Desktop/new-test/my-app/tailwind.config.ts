@@ -12,6 +12,15 @@ const config: Config = {
         '3/10': '30%',
         '7/10': '70%'
       },
+      backgroundImage: {
+        'gradient-45': 'linear-gradient(45deg, var(--tw-gradient-stops))',
+        'gradient-to-r': 'linear-gradient(to right, var(--tw-gradient-stops))',
+        'gradient-to-l': 'linear-gradient(to left, var(--tw-gradient-stops))',
+        'gradient-to-t': 'linear-gradient(to top, var(--tw-gradient-stops))',
+        'gradient-to-b': 'linear-gradient(to bottom, var(--tw-gradient-stops))',
+        // Add more directions as needed
+      },
+
 
       colors: {
         "theme-opacity": 'var(--state-theme-opacity)',
@@ -22,9 +31,13 @@ const config: Config = {
         'danger': '#a62216',
         'dark': "#242a31",
         'warning': "#ca8a04",
+        'dark-brown': '#4B2E2A',
         'suspend': '#ea580c',
         'blue': "#0369a1",
-        "amber": "#b45309"
+        "amber": "#b45309",
+        'custom-blue': '#1A3153',
+        'custom-dark': '#0F172A',
+
       },
       keyframes: {
         'animate-boing': {

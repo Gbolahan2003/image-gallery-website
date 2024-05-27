@@ -69,7 +69,7 @@ const CustomInput: FC<InputProps> = ({ label, handleOnChange, handleOnBlur, plac
 
         default:
             return (
-                <div className={`form-field ${formik?.touched[name] && formik?.errors[name] ? 'error' : ''} space-y-1`}>
+                <div className={`form-fieldhey ${formik?.touched[name] && formik?.errors[name] ? 'error' : ''} space-y-1`}>
                     <label htmlFor={name}>{isRequired && <span className="text-red-600">*</span>}{label}</label>
                     <div className='flex items-center  relative'>
 
@@ -118,7 +118,7 @@ const CustomInput: FC<InputProps> = ({ label, handleOnChange, handleOnBlur, plac
                                     </button>
                                 </span>
                             )
-                        }
+                        } 
 
 
                     </div>

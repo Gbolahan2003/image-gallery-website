@@ -12,7 +12,42 @@
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
   }
 }
 
+
+/* .input{
+  height: 3rem;
+  font-size: 1.2rem;
+  padding: 0.4rem;
+  border-radius: 5px;
+border: 2px solid rgba(84, 95, 125, 0.15);
+background: #FFF;
+} */
+.input {
+  background: #FAFAFA;
+  border: 2px solid #EDEAEA;
+  @apply   border-[#545F7D26] focus:border-theme focus:outline-none rounded-md placeholder:text-lg text-lg h-14 w-full px-3
+}
+
+.input-items {
+  background: #FAFAFA;
+  border: 1px solid #EDEAEA;
+  @apply focus:border-theme focus:outline-none rounded-lg placeholder:text-xs text-sm h-10 px-3
+}
+
+.textarea {
+  background: #FAFAFA;
+  border: 1px solid #EDEAEA;
+  @apply focus:border-theme focus:outline-none rounded-lg placeholder:text-sm text-sm w-full px-3
+}
+
+
+.checkbox {
+  @apply w-4 h-4 rounded-lg
+}
+
+.otp-input {
+  @apply text-lg bg-white rounded-md shadow-slate-200 w-12 h-12 text-center mx-4 border-2 border-mute focus:outline-none
+}
