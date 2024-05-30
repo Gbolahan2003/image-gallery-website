@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@syncfusion/ej2-react-image-editor": "^25.2.4",
     "axios": "^1.6.8",
     "clsx": "^2.1.1",
     "firebase": "^10.12.1",
+    "flowbite-react": "^0.9.0",
     "formik": "^2.4.6",
     "framer-motion": "^11.2.6",
     "iconify": "^1.4.0",
@@ -27,6 +29,7 @@
     "redux": "^5.0.1",
     "redux-toolkit": "^1.1.2",
     "sonner": "^1.4.41",
+    "uuid": "^9.0.1",
     "yup": "^1.4.0"
   },
   "devDependencies": {

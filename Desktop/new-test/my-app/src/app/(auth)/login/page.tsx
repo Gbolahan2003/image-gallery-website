@@ -13,13 +13,11 @@ import {useRouter} from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import handleErrors from '@/errorHandler'
+import { loginprops } from '@/app/redux/auth/interface'
+import { useAuth } from '@/context/authContext'
 
 
 
-interface login{
-  email:string,
-  password:string
-}
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -37,13 +35,14 @@ const Login = () => {
     password:''
   }
  
-  const handleSubmit = async (values: login) => {
+  const {signIn} = useAuth()
+  const handleSubmit = async (values: loginprops) => {
     setIsLoading(true)
     try {
-      await signInWithEmailAndPassword(values.email, values.password)
-    toast.success('login successful')
-      // sessionStorage.setItem('user', 'true' )
+      await signIn(values.email, values.password)
+      toast.success('Login sucsessful')
       router.push('/dashboard')
+      return
     } catch (error) {
       handleErrors(error)
     }
@@ -79,8 +78,8 @@ const Login = () => {
   </Button>
  </div>
  <div className="mt-4 flex gap-2">
-    <Link href={'/sign-up'} className='text-[#39CDCC]'>{`Don't have an account?`}</Link>
-    <p className='text-theme'>Sign up</p>
+    <p  className='text-[#39CDCC]'>{`Don't have an account?`}</p>
+    <Link href={'/sign-up'} className='text-theme'>Sign up</Link>
   </div>
 </Form>
           </Formik>

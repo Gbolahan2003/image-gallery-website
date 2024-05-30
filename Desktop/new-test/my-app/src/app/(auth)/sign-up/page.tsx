@@ -12,6 +12,9 @@ import { user } from '@/types/interfaces'
 import { doc, setDoc } from 'firebase/firestore'
 import { toast } from 'sonner'
 import handleErrors from '@/errorHandler'
+import { useAuth } from '@/context/authContext'
+import Link from 'next/link'
+import { AnyARecord } from 'dns'
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -30,28 +33,35 @@ const SignUp = () => {
     email: '',
     password: ''
   }
+  const {currentUser, signUp} = useAuth()
 
-  const handleSubmit = async (values: user) => {
-    setIsLoading(true)
+  const handleSubmit = async (values:any, { setSubmitting }:any) => {
+    setIsLoading(true);
+    const { firstName, lastName, email, password } = values;
+
+    console.log('Password:', password); // Log the password to debug
+
     try {
-      const userCredentials = await createUserWithEmailAndPassword(auth, values.email, values.password)
-      const user = userCredentials.user
-      // sessionStorage.setItem('user', 'true' )
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
       await setDoc(doc(db, 'users', user.uid), {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        createdAt: new Date()
-      })
-      console.log(user);
-      
-     toast.success('Registration successful')
+        firstName,
+        lastName,
+        email,
+        createdAt: new Date(),
+      });
+
+      console.log('Registration successful', user);
+      toast.success('Registration successful');
     } catch (error) {
-     handleErrors(error)
+      console.error('Error:', error);
+      toast.error('Registration failed');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
+      setSubmitting(false);
     }
-  }
+  };
 
   return (
     <div className="w-full flex h-[100vh] gap-24">
@@ -85,7 +95,7 @@ const SignUp = () => {
                 </div>
               </div>
               <div className="mt-6">
-                <Button size='full' type="submit" isLoading={isLoading || isSubmitting}>
+                <Button size='full' disabled={isSubmitting} type="submit" isLoading={isLoading || isSubmitting}>
                  submit
                 </Button>
               </div>
@@ -94,7 +104,7 @@ const SignUp = () => {
         </Formik>
         <div className="mt-4 flex gap-2">
           <p className='text-[#39CDCC]'>{`Already have an account?`}</p>
-          <p className='text-theme'>Log in</p>
+          <Link href={'/login'} className='text-theme'>Log in</Link>
         </div>
       </div>
     </div>

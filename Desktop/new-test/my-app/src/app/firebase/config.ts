@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps } from "firebase/app";
 import {getAuth} from 'firebase/auth'
-import { getFirestore, collection,getDocs } from "firebase/firestore";
-
+import { getFirestore, collection,getDocs,  } from "firebase/firestore";
+import {getStorage} from 'firebase/storage'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -23,16 +23,19 @@ const firebaseConfig = {
 const app:any = !getApps().length? initializeApp(firebaseConfig):getApps();
 const auth = getAuth(app)
 const db = getFirestore(app)
+const firestore = getFirestore()
 const callRef = collection(db, 'users')
+const imageDB = getStorage(app)
 //collection reference
-getDocs(callRef).then((snapshots)=>{
-console.log(snapshots.docs);
-let users:any =[]
-snapshots.docs.forEach((doc)=>{
-  users.push({...doc.data(),id:doc.id})
-})
 
-console.log(users);
-})
+// getDocs(callRef).then((snapshots)=>{
+// console.log(snapshots.docs);
+// let users:any =[]
+// snapshots.docs.forEach((doc)=>{
+//   users.push({...doc.data(),id:doc.id})
+// })
 
-export {app, auth, db}
+// console.log(users);
+// })
+
+export {app, auth, db,imageDB, firestore}

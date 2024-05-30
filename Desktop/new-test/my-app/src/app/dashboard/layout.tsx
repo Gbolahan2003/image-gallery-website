@@ -15,7 +15,7 @@ const layout:FC<dashboardProps> = ({children}) => {
         <div className="w-full"><Navbar/></div>
         <div className="">
           <GlobalProvider>
-          {children}
+              {children}
           </GlobalProvider>
         </div>
     </div>

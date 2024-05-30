@@ -1,5 +1,9 @@
 'use client'
 import { useAppSelector } from "@/app/redux/store";
+import testModal from "./testModal";
+import TestModal from "./testModal";
+import AddImage from "./addImageDocument";
+import DeleteModal from "./deleteModal";
 
 const ShowAllModals = () => {
     
@@ -7,7 +11,9 @@ const ShowAllModals = () => {
 
 
     const Modals = {
-        test:''
+        TestModal:TestModal,
+        AddImage:AddImage,
+        DeleteModal:DeleteModal
     }
     const show = useAppSelector(state => state.utils.show)
 

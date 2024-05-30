@@ -20,10 +20,10 @@ const config: Config = {
         'gradient-to-b': 'linear-gradient(to bottom, var(--tw-gradient-stops))',
         // Add more directions as needed
       },
-
-
+      
       colors: {
         "theme-opacity": 'var(--state-theme-opacity)',
+        
         "theme": '#213F7D',
         "button": '#5EB839',
         "mute": "#6b7280",
@@ -35,8 +35,16 @@ const config: Config = {
         'suspend': '#ea580c',
         'blue': "#0369a1",
         "amber": "#b45309",
-        'custom-blue': '#1A3153',
-        'custom-dark': '#0F172A',
+        
+        'background': '#121212', // Dark background
+        'primary-text': '#e0e0e0', // Light gray text
+        'secondary-text': '#b0b0b0', // Dim gray text
+        'primary-accent': '#bb86fc', // Purple accent
+        'secondary-accent': '#03dac6', // Teal accent
+        'error-color': '#cf6679', // Red error color
+        'card-bg': '#1e1e1e', // Card background
+        'border-color': '#2c2c2c', // Border color
+
 
       },
       keyframes: {
