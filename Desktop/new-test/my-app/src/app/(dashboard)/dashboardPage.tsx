@@ -6,14 +6,19 @@ import Lightbox from '@/components/element/lightBox'
 import { useAuth } from '@/context/authContext'
 import { Button } from '@/components/element/button'
 import { useAppDispatch, useAppSelector } from '../redux/store'
-import { showItem } from '@/components/utils'
+import { setIsSubmitting, showItem } from '@/components/utils'
 import ShowAllModals from '@/components/modals/showAllModals'
 import { Form, Formik } from 'formik'
 import CustomInput from '@/components/form/formik/customInput'
 import * as Yup from 'yup'
-import { addUserData, fetchImageMetadata } from '../redux/imageDocuments/fetaures'
+import { addUserData, deleteImageData, fetchImageMetadata } from '../redux/imageDocuments/fetaures'
 import Iconify from '@/components/element/icon'
-import { Tooltip } from 'flowbite-react'
+import Navbar from '@/components/element/navbar'
+import Images from './Images'
+import DeleteModal from '@/components/modals/deleteModal'
+import { batch } from 'react-redux'
+import ShareModal from '@/components/modals/shareModal'
+import ProgressBar from '@/components/element/progressBar'
 
 
  const DashboardPage = () => {
@@ -22,6 +27,10 @@ import { Tooltip } from 'flowbite-react'
 
   const dispatch = useAppDispatch()
   const ImageData = useAppSelector(state=>state.imageDocument.imageMetaData)
+  const show = useAppSelector(state=>state.utils.show)
+  const deleteId = useAppSelector(state=>state.utils.deleteId)
+  const isSubmitting =useAppSelector(state=>state.utils.isSubmitting)
+  const shareImage:any= useAppSelector(state=>state.utils.shareImage)
 
 useEffect( ()=>{
    dispatch(fetchImageMetadata(currentUser.uid))
@@ -29,14 +38,32 @@ useEffect( ()=>{
 },[dispatch, currentUser])
   
 
+const handleDelete=async()=>{
+  dispatch(setIsSubmitting(true))
+  console.log(deleteId);
+  
+  let deleted
+   deleted = await dispatch(deleteImageData(currentUser.uid, deleteId))
+  if(deleted){
+    batch(async()=>{
+     await dispatch(fetchImageMetadata(currentUser.uid))
+    })
+  }
+ dispatch(setIsSubmitting(false))
+  dispatch(showItem(null))
+
+}
+
 
 
   return (
     <>
     {
         currentUser && (
-            <div className={` bg-background min-h-screen text-primary-text`}>
-    <header className="p-4 border-b flex justify-between items-center mb-10 border-border-color">
+       <div className='w-full'>
+              <div className="w-full"><Navbar/></div>
+            <div className={` bg-background min-h-screen text-primary-text px-8`}>
+    <header className="p-4 flex lg:flex-row flex-col justify-between items-center mb-10">
       <h1 className="text-3xl font-bold">Welcome to your Gallery</h1>
       {/* <h1 className="text-secondary-text">Welcome to your gallery {users?.firstName}.</h1> */}
       <button
@@ -47,64 +74,25 @@ useEffect( ()=>{
     Upload New Photo
       </button>
     </header>
-    <main className="p-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {/* {[...Array(6)].map((_, index) => (
-        <div key={index} className="bg-card-bg p-4 hover:cursor-pointer duration-300 hover:p-8 rounded-lg shadow-md">
-          <Image width={100} height={50}  src={`https://via.placeholder.com/150?text=Image+${index + 1}`} alt={`Image ${index + 1}`} className="w-full h-auto rounded-lg" />
-          <h2 className="text-xl font-semibold mt-2">Image {index + 1}</h2>
-          <p className="text-secondary-text">Description of image {index + 1}.</p>
-        </div>
-      ))} */}
-      {ImageData?.map((image, index) => (
-        <div key={index} className="relative bg-gray-800 p-4 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
-          <div className="relative w-full image-container" style={{ paddingBottom: '100%', overflow: 'hidden' }}>
-            <ReactImage
-              src={image.imageUrl}
-              alt={image.name}
-              layout="fill"
-              objectFit="cover"
-              className="rounded-md image transition-opacity duration-300"
-            />
-            <div className="absolute inset-0 flex  top-0 right-0 opacity-0 hover:opacity-100 transition-opacity duration-300 overlay">
-            <div className="">
-            <button
-                className="bg-red-600 hover:bg-red-800 text-white p-2 rounded-md m-2"
-                onClick={() => dispatch(showItem('DeleteModal'))}
-              >
-                <Tooltip content='Delete'>
-                <Iconify icon='fluent:delete-24-regular'/>
 
-                </Tooltip>
-              </button>
-              <button
-                className="bg-blue-600 text-white p-2 hover:bg-theme rounded-md m-2"
-                onClick={() => console.log(image.id)}
-              >
-              <Tooltip content='Edit' className='4xl'>
-               <Iconify icon='fluent:edit-28-filled'/> 
-               </Tooltip>
-              </button>
-              <button
-                className="bg-blue-600 text-white hover:bg-white p-2 rounded-md m-2 hover:text-black"
-                onClick={() => console.log(image.id)}
-              >
-               <Tooltip content='share'>
-               <Iconify icon='fluent:share-24-filled'/>
-               </Tooltip>
-              </button>
-            </div>
-            </div>
-          </div>
-          <h3 className="text-white font-semibold mt-2">{image.name}</h3>
-          <p className="text-gray-400">{image.description}</p>
-          <p className="text-gray-500 text-sm">{new Date(image.uploadedAt).toLocaleString()}</p>
-        </div>
-      ))}
-    </main>
+<>
+{ImageData?.length ? (
+  <Images ImageData={ImageData} />
+): <div className="flex flex-col items-center justify-center w-full h-64 text-center animate-pulse">
+<Iconify icon="fluent:document-search-20-filled" className="text-[14rem] text-gray-400" />
+<p className="text-gray-400 mt-4">No images found</p>
+</div>}
+</>
   </div>
+       </div>
         )
     }
-    <ShowAllModals/></>
+{show ==='deleteModal' && <DeleteModal  handleDelete={handleDelete}/>}
+
+{show === 'ShareModal' && <ShareModal name={shareImage?.name} description={shareImage?.description} imageUrl={shareImage?.imageUrl}/>}
+
+    <ShowAllModals/>
+    </>
   )
 }
 

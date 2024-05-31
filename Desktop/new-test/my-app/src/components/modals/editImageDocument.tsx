@@ -1,27 +1,41 @@
-'use client'
-import React, { useState } from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import ReactImage from 'next/image';
 import CustomModal from './customModal';
 import { Button } from '../element/button';
 import { UploadImageProps } from '@/app/redux/imageDocuments/interface';
-import { fetchImageMetadata, uploadImage } from '@/app/redux/imageDocuments/fetaures';
+import { EditImage, fetchImageMetadata, getImageByID } from '@/app/redux/imageDocuments/fetaures';
 import { useAuth } from '@/context/authContext';
 import { toast } from 'sonner';
-import { useAppDispatch } from '@/app/redux/store';
+import { useAppDispatch, useAppSelector } from '@/app/redux/store';
 import { showItem } from '../utils';
 import { batch } from 'react-redux';
 import { openEditor } from 'react-profile';
 import 'react-profile/themes/dark';
 
-const UploadImageModal: React.FC = () => {
+const UpdateImageModal: React.FC = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [editImage, setEditImage] = useState(false);
-
   const dispatch = useAppDispatch();
   const { currentUser } = useAuth();
+  const imageId = useAppSelector((state) => state.utils.deleteId);
+  
+  useEffect(() => {
+    if (currentUser?.uid && imageId) {
+      dispatch(getImageByID(currentUser.uid, imageId));
+    }
+  }, [currentUser, imageId, dispatch]);
+
+  const singleImage = useAppSelector((state) => state.imageDocument.singleImageData);
+
+  useEffect(() => {
+    if (singleImage?.imageUrl) {
+      setImagePreview(singleImage.imageUrl);
+    }
+  }, [singleImage]);
 
   const readImageDimensions = (file: File): Promise<{ width: number; height: number }> => {
     return new Promise((resolve, reject) => {
@@ -47,7 +61,7 @@ const UploadImageModal: React.FC = () => {
 
     if (editImage) {
       const edited:any = await openEditor({ src: file, language: 'en' }) || null;
-      editedFile = edited.editedImage ? await dataURLtoFile(edited?.editedImage?.getDataURL(), file.name) : file;
+      editedFile = edited?.editedImage ? await dataURLtoFile(edited.editedImage.getDataURL(), file.name) : file;
     }
 
     formik.setFieldValue('image', editedFile);
@@ -68,12 +82,13 @@ const UploadImageModal: React.FC = () => {
 
   const formik = useFormik<UploadImageProps>({
     initialValues: {
-      name: '',
-      description: '',
-      image: null,
-      height: 20,
-      width: 20
+      name: singleImage?.name || '',
+      description: singleImage?.description || '',
+      image: singleImage?.imageUrl || null,
+      height: singleImage?.height || 20,
+      width: singleImage?.width || 20,
     },
+    enableReinitialize: true,
     validationSchema: Yup.object({
       name: Yup.string().required('Name is required'),
       description: Yup.string().required('Description is required'),
@@ -83,15 +98,15 @@ const UploadImageModal: React.FC = () => {
       if (!values.image) return;
 
       setLoading(true);
-      const { width, height } = await readImageDimensions(values.image);
+      const { width, height } = await readImageDimensions(values.image as File);
       console.log(width, height);
 
       if (width && height) {
-        const submitted = await dispatch(uploadImage({
+        const submitted = await dispatch(EditImage({
           ...values,
           width,
-          height
-        }, currentUser.uid));
+          height,
+        }, currentUser.uid, imageId));
 
         if (submitted) {
           toast.success('Image Uploaded successfully');
@@ -106,7 +121,7 @@ const UploadImageModal: React.FC = () => {
   });
 
   return (
-    <CustomModal title="Upload Image">
+    <CustomModal title="Edit image">
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         <div className="flex flex-col space-y-1">
           <label htmlFor="image" className="text-white font-medium">Select Image:</label>
@@ -167,7 +182,7 @@ const UploadImageModal: React.FC = () => {
           <Button
             isLoading={loading}
             disabled={loading}
-            size='lg'
+            size="lg"
             type="submit"
             className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md"
           >
@@ -179,4 +194,4 @@ const UploadImageModal: React.FC = () => {
   );
 };
 
-export default UploadImageModal;
+export default UpdateImageModal;

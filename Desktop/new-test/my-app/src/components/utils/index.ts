@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Alert, customSelectOption } from "./interface";
+import { Alert, customSelectOption, shareImage } from "./interface";
 
 
 
@@ -12,8 +12,11 @@ export interface UtilSliceState {
     alert: Alert | null,
     currentPage: number,
     itemsPerPage: number,
-    deleteId: string | number | null,
-    editId:string|number|null
+    deleteId: string| null,
+    editId:string|number|null,
+    shareImage:shareImage|null,
+    imageIndex:number
+    
 
  
 }
@@ -29,7 +32,9 @@ const initialState: UtilSliceState = {
     currentPage: 1,
     itemsPerPage: 10,
     deleteId: null,
-    editId:null
+    editId:null,
+    shareImage:null,
+    imageIndex:0
    
 }
 
@@ -83,7 +88,7 @@ export const UtilSlice = createSlice({
             state.currentPage = Math.min(state.currentPage, lastPage);
         },
 
-        setDeleteId: (state: UtilSliceState, action: PayloadAction<string | number | null>) => {
+        setDeleteId: (state: UtilSliceState, action: PayloadAction<string | null>) => {
             state.deleteId = action.payload
         },
     
@@ -95,6 +100,12 @@ export const UtilSlice = createSlice({
         resetCurrentPage: (state: UtilSliceState) => {
             state.currentPage = 1
         },
+        setShareImage:(state:UtilSliceState, action:PayloadAction<shareImage>)=>{
+            state.shareImage = action.payload
+        },
+        setImageIndex:(state:UtilSliceState, action:PayloadAction<number>)=>{
+            state.imageIndex = action.payload
+        }
         
 
 
@@ -121,5 +132,7 @@ export const {
     setDeleteId,
     setIsSubmitting,
     resetCurrentPage,
+    setShareImage,
+    setImageIndex
 
 } = UtilSlice.actions

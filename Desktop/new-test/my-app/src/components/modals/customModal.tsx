@@ -25,8 +25,8 @@ const CustomModal: FC<Props> = ({ title, children, desc, size = "md", pad, onClo
   return (
     <div className=" fixed top-0 left-0 w-full h-full overflow-y-auto z-50 bg-opacity-75 backdrop-blur-sm flex bg-black items-center justify-center">
       <motion.div
-        className={`bg-background rounded-lg shadow-lg overflow-hidden relative ${
-          size === "sm" ? "md:w-1/2" : "md:w-3/4 lg:w-1/2"
+        className={`bg-background rounded-lg shadow-lg overflow-hidden relative  ${
+          size === "sm" ? "md:w-3/4 lg:w-1/3 w-10/12" : "md:w-3/4 lg:w-1/2 w-10/12"
         }`}
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}

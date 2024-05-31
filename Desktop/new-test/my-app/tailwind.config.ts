@@ -13,12 +13,19 @@ const config: Config = {
         '7/10': '70%'
       },
       backgroundImage: {
+        'instagram-gradient': 'linear-gradient(45deg, #833AB4, #FD1D1D, #F56040)',
         'gradient-45': 'linear-gradient(45deg, var(--tw-gradient-stops))',
         'gradient-to-r': 'linear-gradient(to right, var(--tw-gradient-stops))',
         'gradient-to-l': 'linear-gradient(to left, var(--tw-gradient-stops))',
         'gradient-to-t': 'linear-gradient(to top, var(--tw-gradient-stops))',
         'gradient-to-b': 'linear-gradient(to bottom, var(--tw-gradient-stops))',
         // Add more directions as needed
+      },
+        textFillColor: {
+        'transparent': 'transparent',
+      },
+      backgroundClip: {
+        'text': 'text',
       },
       
       colors: {

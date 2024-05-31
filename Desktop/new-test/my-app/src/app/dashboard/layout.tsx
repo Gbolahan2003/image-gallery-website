@@ -12,7 +12,7 @@ const layout:FC<dashboardProps> = ({children}) => {
 
   return (
     <div className='w-full  '>
-        <div className="w-full"><Navbar/></div>
+        
         <div className="">
           <GlobalProvider>
               {children}
